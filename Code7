@@ -1,0 +1,74 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    /*
+     * Complete the 'diagonalDifference' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts 2D_INTEGER_ARRAY arr as parameter.
+     */
+    public static int diagonalDifference(List<List<Integer>> arr) {
+        int primaryDiagonalSum = 0;
+        int secondaryDiagonalSum = 0;
+        int n = arr.size();
+
+        for (int i = 0; i < n; i++) {
+            // Elements where row index == column index
+            primaryDiagonalSum += arr.get(i).get(i);
+            
+            // Elements where row index + column index == n - 1
+            secondaryDiagonalSum += arr.get(i).get(n - 1 - i);
+        }
+
+        // Return the absolute difference between the sums
+        return Math.abs(primaryDiagonalSum - secondaryDiagonalSum);
+    }
+
+}
+
+public class Code7 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        // Read the size of the square matrix
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> arr = new ArrayList<>();
+
+        // Read each row of the matrix
+        for (int i = 0; i < n; i++) {
+            String[] arrRowTemp = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+            List<Integer> arrRowItems = new ArrayList<>();
+
+            for (int j = 0; j < n; j++) {
+                int arrItem = Integer.parseInt(arrRowTemp[j]);
+                arrRowItems.add(arrItem);
+            }
+
+            arr.add(arrRowItems);
+        }
+
+        // Calculate result
+        int result = Result.diagonalDifference(arr);
+
+        // Write output
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
